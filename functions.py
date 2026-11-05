@@ -1,5 +1,7 @@
 import pygame
 
+from moves import pawn
+
 ##Generating Board
 cell_size = 70 
 
@@ -56,9 +58,21 @@ def cell_pos(p_1,p_2):
 
     return pos
 
+def cell_centre(p_1, p_2):
+
+    pos = (((start_x + cell_size*p_1) + cell_size/2, (start_y + cell_size*p_2) + cell_size/2))
+
+    return pos
+
 def draw_piece(screen, piece, pos):
     screen.blit(piece, pos)
 
+def draw_choices(screen, cell_x, cell_y):
+    x,y = cell_centre(cell_x,cell_y)
+    r = 18
+    circle_surface = pygame.Surface((r*2, r*2), pygame.SRCALPHA)
+    pygame.draw.circle(circle_surface, (0,0,0,128), (r,r),r)
+    screen.blit(circle_surface, (x-r, y-r))
 
 def update_board(board, pieces, screen):
     for i in range(8):
@@ -98,3 +112,14 @@ def onClick(mouse_x, mouse_y):
         return mouse_pos
 
     return (-1,-1)
+
+def choices(board, pos_pack):
+    x_pos, y_pos = pos_pack
+    piece = board[int(x_pos)][int(y_pos)]
+
+    if piece.upper() == "P":
+       return pawn(piece, x_pos,y_pos)
+
+    return []
+
+    
